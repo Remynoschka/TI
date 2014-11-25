@@ -1,0 +1,64 @@
+
+import ij.process.*;	// Pour classe Float Processor
+import java.awt.Rectangle;
+
+abstract public class DCT2D {
+	
+	// ---------------------------------------------------------------------------------
+	/**
+	 * Transformation DCT 2D directe (méthode de classe) utilisant la séparabilité
+	 * @param fp Signal 2D d'entrée et de sortie (MxN) (FloatProcessor)
+	 */ 
+	public static void forwardDCT(FloatProcessor fp) {
+		
+		// Traiter les lignes
+		for (int i = 0 ; i < fp.getHeight() ; i++){			
+			double[] transform = DCT1D.forwardDCT(fp.getLine(0, i, fp.getLineWidth()-1, i));
+			for (int j = 0 ; j < fp.getLineWidth() ; j++){
+				fp.setf(j, i, (float) transform[j]);
+			}
+		}
+		
+		// Traiter les colonnes de l'image résultant du traitement des lignes
+		for (int i = 0 ; i < fp.getWidth() ; i++){
+			int[] colonne = new int[fp.getHeight()];
+			fp.getColumn(i, 0, colonne , fp.getHeight());
+			double[] transform = DCT1D.forwardDCT(colonne);
+			for (int j = 0 ; j < fp.getHeight() ; j++){
+				fp.setf(j, i, (float) transform[j]);
+			}
+		}
+	}
+
+	// ---------------------------------------------------------------------------------
+	/**
+	 * Transformation DCT 2D inverse (méthode de classe)
+	 * @param fp Signal 2D d'entrée et de sortie (FloatProcessor)
+	 */
+	public static void inverseDCT(FloatProcessor fp) {
+
+		// Traiter les lignes
+		for (int i = 0 ; i < fp.getHeight() ; i++){			
+			double[] transform = DCT1D.inverseDCT(fp.getLine(0, i, fp.getLineWidth()-1, i));
+			for (int j = 0 ; j < fp.getLineWidth() ; j++){
+				fp.setf(j, i, (float) transform[j]);
+			}
+		}
+		
+		// Traiter les colonnes de l'image résultant du traitement des lignes
+		for(int i=0;i<fp.getWidth();i++){
+			double [] tmp=new double[fp.getHeight()];
+
+			for(int j=0; j<fp.getHeight();j++)
+			tmp[d] =fp.getPixelValue(i+r.x, d+r.y);
+
+			tmp=DCT1D.forwardDCT(tmp);
+
+			for(int y=0;y<height;++y){
+			fp.putPixelValue(i+r.x, y+r.y, tmp[y]);
+			}
+
+
+	}
+
+}

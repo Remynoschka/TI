@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Lille 1, copyright 2010 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>Master IVI | Cours / TI-semaine-09-contours-b</title>
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <!--HeaderText--><style type="text/css"><!--.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+a.varlink { text-decoration:none; }
+
+--></style>
+  <link rel="stylesheet" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/pmwiki-core.css" type="text/css">
+
+  <script type="text/javascript" src="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/LaTeXMathML.js"> </script>
+<link rel="stylesheet" type="text/css" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/ics.css" media="screen">
+  <meta name="robots" content="index,follow">
+<meta name="description" content="master ivi informatique ase lille vision interaction image cours en ligne optique
+image gradient Sobel direction maxima locaux local norm threshold imagej">
+
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/lille1.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/lille1-logo.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/lille1-violet.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/acces-lille1.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/beautifier.css" type="text/css">
+    <link rel="icon" title="Lille 1" href="http://master-ivi.univ-lille1.fr/pub/skins/lille1/images/lille1-icon.png" type="image/png">
+  </head>
+  <body onload="if (typeof initapplets == 'function') initapplets ();">
+    <div id="acces">
+      <form action="http://www.univ-lille1.fr/Accueil/redirection" method="get">
+        <div> <img src="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/minilogo-lille1.png" alt="Université Lille1" title="Université Lille1">
+          <div id="englobe_acces">
+            <p><label for="acces_direct">Accéder aux autres sites de l'Université:</label></p>
+            <select name="lien" id="acces_direct">
+              <option selected="selected" value=""></option>
+              <optgroup label="UFR et Faculté">
+                <option value="http://ecosocio.univ-lille1.fr/">Faculté des Sciences Economiques et Sociales</option>
+                <option value="http://sm-wimereux.univ-lille1.fr/">Station Marine de Wimereux</option>
+                <option value="http://www.univ-lille1.fr/ufrbio">UFR Biologie</option>
+                <option value="http://chimie.univ-lille1.fr/">UFR Chimie</option>
+                <option value="http://geographie.univ-lille1.fr/">UFR Géographie</option>
+                <option value="http://ieea.univ-lille1.fr/">UFR IEEA</option>
+                <option value="http://ufr-math.univ-lille1.fr/">UFR Mathématiques</option>
+                <option value="http://physique.univ-lille1.fr/">UFR Physique</option>
+                <option value="http://www.univ-lille1.fr/geosciences/">UFR Sciences de la Terre</option>
+              </optgroup>
+              <optgroup label="Services">
+                <option value="http://doc.univ-lille1.fr/">Bibliothèque universitaire</option>
+                <option value="http://www.univ-lille1.fr/cups/">CUPS</option>
+                <option value="http://cri.univ-lille1.fr">Centre de Ressources Informatiques</option>
+                <option value="http://ci.univ-lille1.fr/">Centre international</option>
+                <option value="http://www.univ-lille1.fr/personnels/">DPRH</option>
+                <option value="http://ofip.univ-lille1.fr/">OFIP</option>
+                <option value="http://pass-pro.univ-lille1.fr">Pass'Pro</option>
+                <option value="http://suaio.univ-lille1.fr">SUAIO</option>
+                <option value="http://suaps.univ-lille1.fr/">SUAPS</option>
+                <option value="http://www.univ-lille1.fr/sudes">SUDES</option>
+                <option value="http://semm.univ-lille1.fr">Service Multimédia</option>
+              </optgroup>
+              <optgroup label="Ecoles et Instituts">
+                <option value="http://cueep.univ-lille1.fr/cueep/">CUEEP</option>
+                <option value="http://www.iae.univ-lille1.fr/">IAE</option>
+                <option value="http://www-iut.univ-lille1.fr/">IUT A</option>
+                <option value="http://www.polytech-lille.fr/">Polytech-Lille</option>
+              </optgroup>
+            </select>
+            <input title="Accéder au site" value="ok" type="submit">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div id="wrapper">
+      <div id="head">
+        <div id="page-actions"><ul><li class="browse"><a accesskey="" class="selflink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-b">Vue</a>
+</li><li class="print"><a accesskey="" rel="nofollow" class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-b?action=print">Imprimer</a>
+</li><li class="logout"><a accesskey="" rel="nofollow" class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-b?action=login">Connexion</a>
+</li></ul>
+</div>
+        <div id="page-title-box">
+          <div id="page-title">Master IVI</div>
+          <div id="page-subtitle">Cours &gt; TI semaine 09 contours b</div>
+        </div>
+      </div>
+      <div id="image">
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="csSWF" height="146" width="780">
+  <param name="movie" value="http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf">
+  <param name="quality" value="autohigh">
+  <param name="bgcolor" value="#ffffff">
+  <param name="allowfullscreen" value="true">
+  <param name="scale" value="showall">
+  <param name="allowscriptaccess" value="always">
+  <param name="flashvars" value="autostart=false&amp;thumb=http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf.thumb.png&amp;thumbscale=55&amp;color=0xffffff,0xffffff">
+  <!--[if !IE]>-->
+    <object type="application/x-shockwave-flash" data="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/bandeau.swf" id="csSWF" height="146" width="780">
+   <param name="quality" value="autohigh">
+   <param name="bgcolor" value="#ffffff">
+   <param name="allowfullscreen" value="true">
+   <param name="scale" value="showall">
+   <param name="allowscriptaccess" value="always">
+   <param name="flashvars" value="autostart=false&amp;thumb=http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf.thumb.png&amp;thumbscale=55&amp;color=0xffffff,0xffffff">
+  <!--<![endif]-->
+   <div id="noUpdate">
+     <p>The video content presented here requires a more recent version 
+of the Adobe Flash Player. If you are you using a browser with 
+JavaScript disabled please enable it now. Otherwise, please update your 
+version of the free Flash Player by <a href="http://www.adobe.com/go/getflashplayer">downloading here</a>.</p>
+   </div>
+  <!--[if !IE]>-->
+  </object>
+  <!--<![endif]-->
+</object>
+
+</div>
+      <div id="content">
+        <div id="col-left">
+          <!--PageLeftFmt-->
+            <div id="leftsidebar"><h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Accueil"><ins>Accueil</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Objectifs">Objectifs</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Programme">Programme</a></h2>
+<h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Accueil"><ins>2013-2014</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Calendrier-M1">Calendrier M1</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Calendrier-M2">Calendrier M2</a></h2>
+<h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/Accueil"><ins>Cours en ligne</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/PjE">S1 - PjE</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/RdF">S2 - RdF</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI">S2 - TI</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/M3DS">S2 - M3DS</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/M3DA">S3 - M3DA</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/VisA">S3 - VisA</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/RVI">S3 - RVI</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/VInd">S3 - VInd</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/PJS">S3 - PJS</a></h2>
+</div>
+          <!--/PageLeftFmt-->
+        </div>
+        <div id="col-right">
+          <!--PageText-->
+<div id="wikitext">
+<h1>2. Détection des maxima locaux de la norme d'un gradient</h1>
+<p style="text-align: right;"><span class="wikitrail">&lt;&lt; <a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-a">Seuillage de la norme d'un gradient</a> | <a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours">Liste des exercices</a> | <a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-c">Seuillage des maxima locaux par hystérésis</a> &gt;&gt;</span>
+</p>
+<div class="vspace"></div><h2>Introduction</h2>
+<p>Le but de cet exercice est d'aboutir à la représentation des maxima 
+locaux de la norme du gradient calculée dans l'exercice précédent.
+Il nous faut pour cela déterminer, en chaque pixel <em>P</em>, les deux voisins de <em>P</em> qui se trouvent dans la direction du gradient. Cette direction doit donc être connue en chaque pixel.
+</p>
+<p class="vspace">L'image de travail est la même que celle de l'exercice précédent (<em>Phare</em>). 
+</p>
+<div class="vspace"></div><h2>Calcul de la direction du gradient</h2>
+<ol><li value="1"> Ajouter à votre macro le calcul, dans une nouvelle 
+image, de la direction du gradient estimé par les masques de Sobel. Pour
+ calculer l'angle du gradient, on utilisera la fonction <a class="urllink" href="http://rsbweb.nih.gov/ij/developer/macro/functions.html#atan2" rel="nofollow">atan2</a>, qui calcule une arc-tangente entre -&#960; et &#960;, et que l'on pourra convertir en degrés.
+<div class="vspace"></div></li><li value="2"> Examiner l'image 
+représentant la direction du gradient de Sobel et l'interpréter en 
+quelques pixels judicieusement choisis. Pour examiner les valeurs des 
+pixels, on peut utiliser l'outil <em>Pixel Inspector</em> (à installer  par le bouton <strong>&gt;&gt;</strong>, puis disponible par le bouton <strong>Px</strong>). 
+</li></ol><div class="vspace"></div><h2>Détection des maxima locaux</h2>
+<ol><li value="3"> Compléter votre macro pour créer une nouvelle image 
+de la norme du gradient, dans laquelle les non-maxima locaux sont 
+éliminés (mis à 0). Les deux voisins à prendre en compte dans la 
+direction du gradient seront déterminés par discrétisation de cette 
+direction. 
+</li></ol><div class="vspace"></div><div class="indent"><strong><em>Attention</em></strong>&nbsp;: dans le langage macro d'imageJ, les priorités classiques des opérateurs ne sont pas toutes respectées (<em>cf</em>. <a class="urllink" href="http://rsbweb.nih.gov/ij/developer/macro/macros.html#operators" rel="nofollow">http://rsbweb.nih.gov/ij/developer/macro/macros.html#operators</a>).
+</div><div class="vspace"></div><div style="text-align: center;"><img src="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-b_fichiers/lighthouse_max_loc.png" alt="" title="" width="200"></div>
+<p style="text-align: center;">Maxima locaux de la norme du gradient
+</p>
+<div class="vspace"></div><ol><li value="4"> Comparer cette nouvelle 
+image de la norme du gradient et celle obtenue initialement, dans 
+laquelle les non-maxima locaux n'étaient pas encore supprimés.
+</li></ol><div class="vspace"></div>
+</div>
+
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+      <!--PageFooterFmt-->
+        <div id="footer">
+          <div id="copyright"><p>© 2010, <a class="urllink" href="http://ieea.univ-lille1.fr/" rel="nofollow">UFR d'IEEA</a> | spécialité commune aux mentions <a class="urllink" href="http://master-ase.univ-lille1.fr/" rel="nofollow">ASE</a> et <a class="urllink" href="http://fil.univ-lille1.fr/master-informatique/" rel="nofollow">Informatique</a> du <a class="urllink" href="http://www.univ-lille1.fr/etudes/offre-de-formation/Sciences-Technologies-Sante" rel="nofollow">master S&amp;T</a> |
+<a class="urllink" href="http://www.univ-lille1.fr/" rel="nofollow">Université Lille 1</a>
+</p>
+</div>
+        </div>
+      <!--/PageFooterFmt-->
+    </div>
+    <div class="clearfix"></div>
+  
+
+
+</body></html>

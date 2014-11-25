@@ -1,0 +1,66 @@
+ macro "derivation" {
+       // On suppose que l'image est ouverte, donc on save son ID
+       image = getImageID();        
+
+       // Conversion 32 bits
+       run("Conversions...", " ");
+       run("32-bit");
+
+       // Creation de la convolution en x
+       run("Duplicate...", "title=px");
+       sobelXImage = getImageID();
+       run("Convolve...", "text1=[-1 0 1\n-2 0 2\n-1 0 1\n] normalize");
+
+       selectImage (image);
+
+       // Creation de la convolution en y
+       run("Duplicate...", "title=py");
+       sobelYImage = getImageID();
+       run("Convolve...", "text1=[-1 -2 -1\n0 0 0\n1 2 1\n] normalize");
+
+       selectImage (image);
+
+       // Image tmp qui servira a analyser de quel type est l'image originale
+       run("Duplicate...", "title=newImage");
+       nouvelle_Image = getImageID();
+
+       selectImage (image);
+       h = getHeight();
+       w = getWidth();
+
+       // batch true, pour eviter le switch entre les images pour cette partie
+       setBatchMode(true);
+       
+       // dans la boucle on selectionne les pixels des convolutions une a une et on calcule le direction gradient que l'on save dans l'image tmp pour l'analyse
+       for (i=0; i<h; i++) {
+               for (j=0; j<w; j++) {
+                       selectImage(sobelXImage);
+                       px = getPixel(i,j);
+
+                       selectImage(sobelYImage);
+                       py = getPixel(i,j);
+
+                       directionGradient = abs(atan2(py,px)*180/PI);
+
+                       selectImage(nouvelle_Image);
+                       setPixel(i,j, directionGradient);
+               }
+       }
+       setBatchMode(false);
+       // on s'assure de selectionner l'aimge d'analyse
+       selectImage(nouvelle_Image);
+       getRawStatistics(nPixels, mean, min, max, std, histogram)
+       // min max indique la valeur min et max des pixels. Utile pour determiner les images car en fonction du type d'image les min max seront differentes
+       // On en a deduit ces conditions en affichant les valeurs de mean min max std.
+	print(mean)
+	print(min)
+	print(max)
+       if (mean > 90 && min==0 && max==180 )
+               print("verticale");
+       if (mean == 90 && std ==0 && min == 90 && max == 90)
+               print("horizontale");
+       if (mean > 90 && min>0 && max<180)  
+               print("diagonale xy");
+       if (mean < 90 && min>0 && max<180)
+               print("diagonale yx");
+}

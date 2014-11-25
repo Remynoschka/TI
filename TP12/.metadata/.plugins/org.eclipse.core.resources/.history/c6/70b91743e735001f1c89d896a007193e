@@ -1,0 +1,184 @@
+import ij.IJ;
+import ij.ImagePlus;
+import ij.gui.GenericDialog;
+import ij.plugin.filter.PlugInFilter;
+import ij.process.*;
+ 
+import java.util.ArrayList;
+import java.util.List;
+ 
+public class TESTPlugin_ implements PlugInFilter {
+ 
+	private int lowThreshold=0;
+	private int highThreshold=0;
+
+	public int setup(String arg, ImagePlus imp) {
+
+		if (imp==null) return DONE;
+ 
+		// Fenêtre de configuration
+		GenericDialog gd = new GenericDialog("Paramètres du seuillage par hystérésis");
+		gd.addNumericField("Seuil bas ",30,0);
+		gd.addNumericField("Seuil haut",100,0);
+		
+		int lowvalue = 0;
+		int highvalue = 0;
+		
+		do {
+			gd.showDialog();
+			if ( gd.wasCanceled() )	return DONE;
+			lowvalue = (int) gd.getNextNumber();
+			highvalue = (int) gd.getNextNumber();
+		} while (lowvalue<=0 || highvalue<lowvalue);
+		gd.dispose();
+		
+		this.lowThreshold=lowvalue;
+		this.highThreshold=highvalue;
+ 
+		return PlugInFilter.DOES_8G;
+	}
+	
+	public void run(ImageProcessor ip) {
+ 
+		// Seuillage par hystérésis
+		ByteProcessor newbp = filter2( ip, this.lowThreshold, this.highThreshold );
+		// Représentation du résultat
+		ImagePlus newImg = new ImagePlus("Résultat du seuillage par hystérésis", newbp);
+		newImg.show();
+		
+	}
+	
+	// ---------------------------------------------------------------------------------
+
+	/**
+	 * Seuillage par hystérésis à partir de l'image de la norme du gradient
+	 * 
+	 * @param ip Image de la norme du gradient (ImageProcessor de type float32)
+	 * @param lowThreshold Seuil bas de l'hystérésis
+	 * @param highThreshold Seuil haut de l'hystérésis
+	 * @return filtered image map
+	 */
+	public ByteProcessor filter(ImageProcessor ip, int lowThreshold, int highThreshold) {
+		int width = ip.getWidth();
+		int height = ip.getHeight();
+ 
+		// Image binaire résultat des points contours après seuillage
+		ByteProcessor out = new ByteProcessor(width,height);
+		// Liste des pixels (coordonnées (x,y)) détectés comme contours
+		List<int[]> highpixels = new ArrayList<int[]>();
+		
+		// Premier parcours de l'image pour seuillage initial
+		for (int y=0; y<height; y++) {
+			for (int x=0; x<width; x++) {
+				
+				// lire la norme du gradient en ce point
+				int g = ip.getPixel(x, y)&0xFF;
+				
+				// Norme inférieure au seuil bas -> pas un pixel contour
+				if (g<lowThreshold) continue;
+				
+				// Norme supérieure au seuil haut -> pixel contour
+				if (g>highThreshold) {
+					out.set(x,y,255);
+					highpixels.add(new int[]{x,y});
+					continue;
+				}
+				
+				// Entre les 2 seuils -> dépend des voisins (
+				out.set(x,y,128);
+			}
+		}
+		
+		// décalages en x et y pour les voisins à prendre en compte
+		int[] dx8 = new int[] {-1, 0, 1,-1, 1,-1, 0, 1};
+		int[] dy8 = new int[] {-1,-1,-1, 0, 0, 1, 1, 1};
+		// Liste des nouveaux pixels contours détectés
+		List<int[]> newhighpixels = new ArrayList<int[]>();
+		
+		while(!highpixels.isEmpty()) {
+			newhighpixels.clear();
+			// pour chaque pixel contour ...
+			for(int[] pixel : highpixels) {
+				int x=pixel[0], y=pixel[1];
+					
+				// ... marquer comme contours ceux de ses 8 voisins précédemment marqués indéterminés
+				for(int k=0;k<8;k++) {
+					int xk=x+dx8[k], yk=y+dy8[k];
+					if (xk<0 || xk>=width) continue;
+					if (yk<0 || yk>=height) continue;
+					if (out.get(xk, yk)==128) {
+						out.set(xk, yk, 255);
+						newhighpixels.add(new int[]{xk, yk});
+					}
+				}
+			}
+			
+			// échanger les listes de pixels contours avant nouveau parcours
+			List<int[]> swap = highpixels; highpixels = newhighpixels; newhighpixels = swap;
+		}
+ 
+		// Mise à 0 des pixels non points contours 
+		// (norme < seuil bas, ou norme > seuil bas mais non connecté à un pixel contour)
+		for (int y=0; y<height; y++)
+			for (int x=0; x<width; x++)
+				if (out.get(x, y)!=255) out.set(x,y,0);
+		
+		return out;
+	}
+	
+	/**
+	 * Seuillage par hystérésis à partir de l'image de la norme du gradient
+	 * Version récursive
+	 * 
+	 * @param ip Image de la norme du gradient (ImageProcessor de type byte)
+	 * @param lowThreshold Seuil bas de l'hystérésis
+	 * @param highThreshold Seuil haut de l'hystérésis
+	 * @return filtered image map
+	 */
+	public ByteProcessor filter2(ImageProcessor ip, int lowThreshold, int highThreshold) {
+		int width = ip.getWidth();
+		int height = ip.getHeight();
+ 
+		// Image binaire résultat des points contours après seuillage
+		ByteProcessor out = new ByteProcessor(width,height);
+
+	    /* Propagation à partir de chaque point pour lequel la norme du gradient est > au seuil haut */
+		for (int y=0; y<height; y++)
+			for (int x=0; x<width; x++) {
+				// lire la norme du gradient en ce point
+				double g = ip.getPixelValue(x, y);
+				if (g>highThreshold && x>=0 && y>= 0 && x<width && y<height)
+					propa_rec (ip, out, lowThreshold, x, y);
+			}
+
+		return out;
+	}
+	
+	/**
+	 * Propagation récursive du seuillage par hystérésis
+	 */
+	private void propa_rec (ImageProcessor grad_norm, ImageProcessor cont_map, int lowThreshold, int x, int y)
+	{
+
+		// Accès au pixel (x,y) dans les images
+	    int g = grad_norm.getPixel(x, y)&0xFF;
+	    double c = cont_map.getPixel(x, y)&0xFF;
+	    
+		/* Autres cas de retour immédiat */
+		if ( c>0 || g==0 || g<lowThreshold)
+			return;
+
+	    /* Sinon, on marque le point */
+		cont_map.set(x,y,255);
+
+	    /* et on propage sur les 8 voisins */
+	    propa_rec (grad_norm, cont_map, lowThreshold, x-1, y-1);
+	    propa_rec (grad_norm, cont_map, lowThreshold, x  , y-1);
+	    propa_rec (grad_norm, cont_map, lowThreshold, x+1, y-1);
+	    propa_rec (grad_norm, cont_map, lowThreshold, x-1, y  );
+	    propa_rec (grad_norm, cont_map, lowThreshold, x+1, y  );
+	    propa_rec (grad_norm, cont_map, lowThreshold, x-1, y+1);
+	    propa_rec (grad_norm, cont_map, lowThreshold, x  , y+1);
+	    propa_rec (grad_norm, cont_map, lowThreshold, x+1, y+1);
+	}
+}

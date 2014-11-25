@@ -1,0 +1,38 @@
+/* 2012 Tiago Ferreira */
+body {
+background:#FFF;
+font-size:10pt;
+font-family:sans-serif;
+margin-top:2cm;
+margin-left:2cm;
+max-width:90%;
+}
+blockquote {
+margin-left:.5cm;
+}
+a.hidden {
+display:none;
+page-break-after:avoid;
+}
+a.internal {
+font-weight:700;
+color:#000;
+}
+a.external:after {
+content:" [" attr(href) "] ";
+color:#aaa;
+font-size:80%;
+}
+hr,#printlink,p.navbar,div.alphabar {
+display:none;
+}
+@page {
+orphans:4;
+widows:2;
+}
+@page:left {
+margin-left:2cm;
+}
+@page:right {
+margin-right:2cm;
+}

@@ -1,0 +1,133 @@
+import ij.*;
+import ij.plugin.filter.*;
+import ij.process.*;
+import ij.gui.*;
+
+public class DCT implements PlugInFilter {
+
+	ImagePlus imp; // Fenêtre contenant l'image de référence
+
+
+	public int setup(String arg, ImagePlus imp) {
+		this.imp = imp;
+		return PlugInFilter.DOES_8G;
+	}
+
+	public void run(ImageProcessor ip) {
+
+
+
+		FloatProcessor fp = (FloatProcessor) (ip.duplicate().convertToFloat());
+		this.forwardDCT2D(fp);
+	}
+
+	/**
+	 * Transformation DCT 1D directe (méthode de classe)
+	 * @param imageOrigine(m) Signal 1D d'entrée (double[])
+	 * @return signaltransform(u) Signal transformé (double[])
+	 */ 
+	public double[] forwardDCT1D(double[] imageOrigine) {
+		int tailleSignal = imageOrigine.length;	// Taille du signal
+		double k = Math.sqrt(2.0 / tailleSignal); // Facteur de normalisation
+		double[] signaltransform = new double[tailleSignal];	// résulat
+		for (int u = 0; u < tailleSignal; u++) {
+			double cu = 1.0;
+			if (u == 0)
+				cu = 1.0 / Math.sqrt(2);	// Facteur de normalisation
+			double somme = 0.0;
+			for (int m = 0; m < tailleSignal; m++) {
+				somme = somme + imageOrigine[m] * Math.cos(Math.PI * (m + 0.5) * u / tailleSignal);
+			}
+			signaltransform[u] = k * cu * somme;
+		}
+		return signaltransform;
+	}
+
+	// ---------------------------------------------------------------------------------
+	/**
+	 * Transformation DCT 1D inverse (méthode de classe)
+	 * @param signalTransform(u) Signal 1D transformé (double[])
+	 * @return inverse(m) signal inverse (double[])
+	 */
+	public double[] inverseDCT1D(double[] signalTransform) {
+		int tailleSignal = signalTransform.length;	// Taille du signal
+		double k = Math.sqrt(2.0 / tailleSignal);	// Facteur de normalisation
+		double[] inverse = new double[tailleSignal];	// résulat
+		for (int m = 0; m < tailleSignal; m++) {
+			double somme = 0;
+			for (int u = 0; u < tailleSignal; u++) {
+				double cu = 1.0;
+				if (u == 0)
+					cu = 1.0/Math.sqrt(2);	// Facteur de normalisation dépendant de u
+				somme = somme + cu * signalTransform[u] * Math.cos(Math.PI * (m + 0.5) * u / tailleSignal);
+			}
+			inverse[m] = k * somme;
+		}
+		return inverse;
+	}
+
+	public void forwardDCT2D(FloatProcessor fp) {
+
+		// Traitement des lignes
+		for (int j = 0; j < fp.getHeight(); j++) {
+			double[] dct_ligne = new double[fp.getWidth()];
+			for (int i = 0; i < fp.getWidth(); i++) {
+				dct_ligne[i] = fp.getf(j, i);
+			}
+			dct_ligne = this.forwardDCT1D(dct_ligne);
+			for (int i = 0; i < fp.getWidth(); i++) {
+				fp.setf(j, i, (float) dct_ligne[i]);
+			}
+		}
+
+		// Traitement des colonnes
+		for (int i = 0; i < fp.getWidth(); i++) {
+			double[] dct_colonne = new double[fp.getHeight()];
+			for (int j = 0; j < fp.getHeight(); j++) {
+				dct_colonne[j] = fp.getf(j, i);
+			}
+			dct_colonne = this.forwardDCT1D(dct_colonne);
+			for (int j = 0; j < fp.getHeight(); j++) {
+				fp.setf(j, i, (float) dct_colonne[j]);
+			}
+		}
+		this.imp = new ImagePlus("DCT", fp);
+		this.imp.show();
+	}
+
+// ---------------------------------------------------------------------------------
+	/**
+	 * Transformation DCT 2D inverse (méthode de classe)
+	 * 
+	 * @param fp
+	 *            Signal 2D d'entrée et de sortie (FloatProcessor)
+	 */
+	public void inverseDCT2D(FloatProcessor fp) {
+
+		//Traitement des lignes 
+		for (int j = 0; j < fp.getHeight(); j++) {
+			double[] ligne = new double[fp.getWidth()];
+			for (int i = 0; i < fp.getWidth(); i++) {
+				ligne[i] = fp.getf(j, i);
+			}
+			ligne = inverseDCT1D(ligne);
+			for (int i = 0; i < fp.getWidth(); i++) {
+				fp.setf(j, i, (float) ligne[i]);
+			}
+		}
+
+		// Traitement des colonnes
+		for (int i = 0; i < fp.getWidth(); i++) {
+			double[] colonne = new double[fp.getHeight()];
+			for (int j = 0; j < fp.getHeight(); j++) {
+				colonne[j] = fp.getf(j, i);
+			}
+			colonne = inverseDCT1D(colonne);
+			for (int j = 0; j < fp.getHeight(); j++) {
+				fp.setf(j, i, (float) colonne[j]);
+			}
+		}
+
+	}
+
+}

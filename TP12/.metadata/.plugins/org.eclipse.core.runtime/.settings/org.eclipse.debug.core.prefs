@@ -1,0 +1,4 @@
+#Mon Mar 22 19:24:44 CET 2010
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n<expression enabled\="true" text\="imp.getWidth()"/>\r\n<expression enabled\="true" text\="ip.getPixelValue(x,y)"/>\r\n<expression enabled\="true" text\="ip.getValue(x,y)"/>\r\n<expression enabled\="true" text\="imp2.getWindow()"/>\r\n</watchExpressions>\r\n
+eclipse.preferences.version=1
+org.eclipse.debug.core.USE_STEP_FILTERS=true

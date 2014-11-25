@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Lille 1, copyright 2010 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>Master IVI | Cours / TI-semaine-09-contours-c</title>
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <!--HeaderText--><style type="text/css"><!--.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+a.varlink { text-decoration:none; }
+
+--></style>
+  <link rel="stylesheet" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/pmwiki-core.css" type="text/css">
+
+  <script type="text/javascript" src="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/LaTeXMathML.js"> </script>
+<link rel="stylesheet" type="text/css" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/ics.css" media="screen">
+  <meta name="robots" content="index,follow">
+<meta name="description" content="master ivi informatique ase lille vision interaction image cours en ligne optique
+image gradient Sobel seuillage hystérésis maxima locaux local norm threshold imagej">
+
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/lille1.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/lille1-logo.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/lille1-violet.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/acces-lille1.css" type="text/css">
+    <link rel="stylesheet" title="Lille 1" href="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/beautifier.css" type="text/css">
+    <link rel="icon" title="Lille 1" href="http://master-ivi.univ-lille1.fr/pub/skins/lille1/images/lille1-icon.png" type="image/png">
+  </head>
+  <body onload="if (typeof initapplets == 'function') initapplets ();">
+    <div id="acces">
+      <form action="http://www.univ-lille1.fr/Accueil/redirection" method="get">
+        <div> <img src="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/minilogo-lille1.png" alt="Université Lille1" title="Université Lille1">
+          <div id="englobe_acces">
+            <p><label for="acces_direct">Accéder aux autres sites de l'Université:</label></p>
+            <select name="lien" id="acces_direct">
+              <option selected="selected" value=""></option>
+              <optgroup label="UFR et Faculté">
+                <option value="http://ecosocio.univ-lille1.fr/">Faculté des Sciences Economiques et Sociales</option>
+                <option value="http://sm-wimereux.univ-lille1.fr/">Station Marine de Wimereux</option>
+                <option value="http://www.univ-lille1.fr/ufrbio">UFR Biologie</option>
+                <option value="http://chimie.univ-lille1.fr/">UFR Chimie</option>
+                <option value="http://geographie.univ-lille1.fr/">UFR Géographie</option>
+                <option value="http://ieea.univ-lille1.fr/">UFR IEEA</option>
+                <option value="http://ufr-math.univ-lille1.fr/">UFR Mathématiques</option>
+                <option value="http://physique.univ-lille1.fr/">UFR Physique</option>
+                <option value="http://www.univ-lille1.fr/geosciences/">UFR Sciences de la Terre</option>
+              </optgroup>
+              <optgroup label="Services">
+                <option value="http://doc.univ-lille1.fr/">Bibliothèque universitaire</option>
+                <option value="http://www.univ-lille1.fr/cups/">CUPS</option>
+                <option value="http://cri.univ-lille1.fr">Centre de Ressources Informatiques</option>
+                <option value="http://ci.univ-lille1.fr/">Centre international</option>
+                <option value="http://www.univ-lille1.fr/personnels/">DPRH</option>
+                <option value="http://ofip.univ-lille1.fr/">OFIP</option>
+                <option value="http://pass-pro.univ-lille1.fr">Pass'Pro</option>
+                <option value="http://suaio.univ-lille1.fr">SUAIO</option>
+                <option value="http://suaps.univ-lille1.fr/">SUAPS</option>
+                <option value="http://www.univ-lille1.fr/sudes">SUDES</option>
+                <option value="http://semm.univ-lille1.fr">Service Multimédia</option>
+              </optgroup>
+              <optgroup label="Ecoles et Instituts">
+                <option value="http://cueep.univ-lille1.fr/cueep/">CUEEP</option>
+                <option value="http://www.iae.univ-lille1.fr/">IAE</option>
+                <option value="http://www-iut.univ-lille1.fr/">IUT A</option>
+                <option value="http://www.polytech-lille.fr/">Polytech-Lille</option>
+              </optgroup>
+            </select>
+            <input title="Accéder au site" value="ok" type="submit">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div id="wrapper">
+      <div id="head">
+        <div id="page-actions"><ul><li class="browse"><a accesskey="" class="selflink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-c">Vue</a>
+</li><li class="print"><a accesskey="" rel="nofollow" class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-c?action=print">Imprimer</a>
+</li><li class="logout"><a accesskey="" rel="nofollow" class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-c?action=login">Connexion</a>
+</li></ul>
+</div>
+        <div id="page-title-box">
+          <div id="page-title">Master IVI</div>
+          <div id="page-subtitle">Cours &gt; TI semaine 09 contours c</div>
+        </div>
+      </div>
+      <div id="image">
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="csSWF" height="146" width="780">
+  <param name="movie" value="http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf">
+  <param name="quality" value="autohigh">
+  <param name="bgcolor" value="#ffffff">
+  <param name="allowfullscreen" value="true">
+  <param name="scale" value="showall">
+  <param name="allowscriptaccess" value="always">
+  <param name="flashvars" value="autostart=false&amp;thumb=http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf.thumb.png&amp;thumbscale=55&amp;color=0xffffff,0xffffff">
+  <!--[if !IE]>-->
+    <object type="application/x-shockwave-flash" data="Master%20IVI%20_%20Cours%20_%20TI-semaine-09-contours-c_fichiers/bandeau.swf" id="csSWF" height="146" width="780">
+   <param name="quality" value="autohigh">
+   <param name="bgcolor" value="#ffffff">
+   <param name="allowfullscreen" value="true">
+   <param name="scale" value="showall">
+   <param name="allowscriptaccess" value="always">
+   <param name="flashvars" value="autostart=false&amp;thumb=http://master-ivi.univ-lille1.fr/fichiers/Site/bandeau.swf.thumb.png&amp;thumbscale=55&amp;color=0xffffff,0xffffff">
+  <!--<![endif]-->
+   <div id="noUpdate">
+     <p>The video content presented here requires a more recent version 
+of the Adobe Flash Player. If you are you using a browser with 
+JavaScript disabled please enable it now. Otherwise, please update your 
+version of the free Flash Player by <a href="http://www.adobe.com/go/getflashplayer">downloading here</a>.</p>
+   </div>
+  <!--[if !IE]>-->
+  </object>
+  <!--<![endif]-->
+</object>
+
+</div>
+      <div id="content">
+        <div id="col-left">
+          <!--PageLeftFmt-->
+            <div id="leftsidebar"><h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Accueil"><ins>Accueil</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Objectifs">Objectifs</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Main/Programme">Programme</a></h2>
+<h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Accueil"><ins>2013-2014</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Calendrier-M1">Calendrier M1</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/2013/Calendrier-M2">Calendrier M2</a></h2>
+<h1><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/Accueil"><ins>Cours en ligne</ins></a></h1>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/PjE">S1 - PjE</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/RdF">S2 - RdF</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI">S2 - TI</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/M3DS">S2 - M3DS</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/M3DA">S3 - M3DA</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/VisA">S3 - VisA</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/RVI">S3 - RVI</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/VInd">S3 - VInd</a></h2>
+<h2><a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/PJS">S3 - PJS</a></h2>
+</div>
+          <!--/PageLeftFmt-->
+        </div>
+        <div id="col-right">
+          <!--PageText-->
+<div id="wikitext">
+<h1>3. Seuillage des maxima locaux par hystérésis</h1>
+<p style="text-align: right;"><span class="wikitrail">&lt;&lt; <a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours-b">Détection des maxima locaux</a> | <a class="wikilink" href="http://master-ivi.univ-lille1.fr/Cours/TI-semaine-09-contours">Liste des exercices</a> |  &gt;&gt;</span>
+</p>
+<div class="vspace"></div><h2>Introduction</h2>
+<p>Après avoir détecté les maxima locaux de la norme du gradient, une 
+étape de seuillage est nécessaire pour aboutir aux pixels contours.
+Le seuillage par hystérésis proposé par <a class="urllink" href="http://fr.wikipedia.org/wiki/Algorithme_de_Canny" rel="nofollow">Canny</a>
+ utilise 2&nbsp;seuils au lieu d'un. Cela améliore la flexibilité du 
+seuillage, mais nécessite davantage de calculs. Pour obtenir des temps 
+de calcul raisonnables, nous allons implémenter son algorithme dans 
+ImageJ sous forme de <em>plugin</em> (écrit en Java) et non plus de macro.
+</p>
+<p class="vspace">L'image de travail est la même que celle des exercices précédents (<em>Phare</em>). 
+</p>
+<div class="vspace"></div><h2>Analyse d'un plugin existant</h2>
+<p>La méthode ci-dessous, inspirée du code de <a class="urllink" href="http://www.developpez.net/forums/d322818/autres-langages/algorithmes/contribuez/image-filtre-canny-imagej/" rel="nofollow">Xavier Philippeau</a>, réalise l'implémentation du seuillage par hystérésis de l'image représentant la norme du gradient&nbsp;:
+</p>
+<div class="vspace"></div><pre class="sourcecode"><span class="category_1">public</span> ByteProcessor hystIter(ImageProcessor imNormeG, <span class="category_1">int</span> seuilBas, <span class="category_1">int</span> seuilHaut) {
+    <span class="category_1">int</span> width = imNormeG.getWidth();
+    <span class="category_1">int</span> height = imNormeG.getHeight();
+
+    ByteProcessor maxLoc = <span class="category_1">new</span> ByteProcessor(width,height);
+    <span class="category_2">List</span>&lt;<span class="category_1">int</span>[]&gt; highpixels = <span class="category_1">new</span> <span class="category_2">ArrayList</span>&lt;<span class="category_1">int</span>[]&gt;();
+
+    <span class="category_1">for</span> (<span class="category_1">int</span> y=0; y&lt;height; y++) {
+        <span class="category_1">for</span> (<span class="category_1">int</span> x=0; x&lt;width; x++) {
+
+            <span class="category_1">int</span> g = imNormeG.getPixel(x, y)&amp;0xFF;
+            <span class="category_1">if</span> (g&lt;seuilBas) <span class="category_1">continue</span>;
+
+            <span class="category_1">if</span> (g&gt;seuilHaut) {
+                maxLoc.set(x,y,255);
+                highpixels.add(<span class="category_1">new</span> <span class="category_1">int</span>[]{x,y});
+                <span class="category_1">continue</span>;
+            }
+
+            maxLoc.set(x,y,128);
+        }
+    }
+
+    <span class="category_1">int</span>[] dx8 = <span class="category_1">new</span> <span class="category_1">int</span>[] {-1, 0, 1,-1, 1,-1, 0, 1};
+    <span class="category_1">int</span>[] dy8 = <span class="category_1">new</span> <span class="category_1">int</span>[] {-1,-1,-1, 0, 0, 1, 1, 1};
+
+    <span class="category_1">while</span>(!highpixels.isEmpty()) {
+
+        <span class="category_2">List</span>&lt;<span class="category_1">int</span>[]&gt; newhighpixels = <span class="category_1">new</span> <span class="category_2">ArrayList</span>&lt;<span class="category_1">int</span>[]&gt;();
+
+        <span class="category_1">for</span>(<span class="category_1">int</span>[] pixel : highpixels) {
+            <span class="category_1">int</span> x=pixel[0], y=pixel[1];
+
+            <span class="category_1">for</span>(<span class="category_1">int</span> k=0;k&lt;8;k++) {
+                <span class="category_1">int</span> xk=x+dx8[k], yk=y+dy8[k];
+                <span class="category_1">if</span> (xk&lt;0 || xk&gt;=width) <span class="category_1">continue</span>;
+                <span class="category_1">if</span> (yk&lt;0 || yk&gt;=height) <span class="category_1">continue</span>;
+                <span class="category_1">if</span> (maxLoc.get(xk, yk)==128) {
+                    maxLoc.set(xk, yk, 255);
+                    newhighpixels.add(<span class="category_1">new</span> <span class="category_1">int</span>[]{xk, yk});
+                }
+            }
+        }
+
+        highpixels = newhighpixels;
+    }
+
+    <span class="category_1">for</span> (<span class="category_1">int</span> y=0; y&lt;height; y++) {
+        <span class="category_1">for</span> (<span class="category_1">int</span> x=0; x&lt;width; x++) {
+            <span class="category_1">if</span> (maxLoc.get(x, y)!=255) maxLoc.set(x,y,0);
+        }
+    }
+    <span class="category_1">return</span> maxLoc;
+}
+</pre>
+<div class="vspace"></div><ol><li value="1"> Intégrer cette méthode dans
+ un plugin imageJ et tester celui-ci. Pour vous aider, voici une version
+ minimaliste (seuils définis dans le code) de ce plugin dans lequel 
+pourra être intégrée la méthode&nbsp;:
+</li></ol><div class="vspace"></div><pre class="sourcecode"><span class="category_1">import</span> ij.ImagePlus;
+<span class="category_1">import</span> ij.gui.GenericDialog;
+<span class="category_1">import</span> ij.plugin.filter.PlugInFilter;
+<span class="category_1">import</span> ij.process.*;
+<span class="category_1">import</span> java.util.ArrayList;
+<span class="category_1">import</span> java.util.List;
+
+<span class="category_1">public</span> <span class="category_1">class</span> TestPlugin_ <span class="category_1">implements</span> PlugInFilter {
+
+    <span class="category_1">private</span> <span class="category_1">int</span> seuilBas=30;
+    <span class="category_1">private</span> <span class="category_1">int</span> seuilHaut=100;
+
+    <span class="category_1">public</span> <span class="category_1">int</span> setup(<span class="category_2">String</span> arg, ImagePlus imp) {
+        <span class="category_1">return</span> PlugInFilter.DOES_8G;
+    }
+
+    <span class="category_1">public</span> <span class="category_1">void</span> run(ImageProcessor ip) {
+        ByteProcessor newbp = hystIter(ip, this.seuilBas, this.seuilHaut);
+        ImagePlus newImg = <span class="category_1">new</span> ImagePlus("Résultat du seuillage par hystérésis", newbp);
+        newImg.show();
+    }
+}
+</pre>
+<div class="vspace"></div><ol><li value="2"> Analyser le code de la méthode <strong>hystIter</strong>, décrire globalement son fonctionnement, puis lui ajouter tous les commentaires nécessaires à sa compréhension.
+</li></ol><div class="vspace"></div><h2>Implémentation récursive du seuillage par hystérésis</h2>
+<ol><li value="3"> Écrire une version récursive <strong>hystRec</strong> de la méthode de seuillage précédente. Cela consiste à propager récursivement le seuillage à partir de chaque point <span><math title="(x,y)"><mstyle><mo maxsize="1">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo maxsize="1">)</mo></mstyle></math></span> pour lequel la norme du gradient est supérieure au seuil haut, par exemple grâce à la méthode&nbsp;:
+</li></ol><div class="vspace"></div><pre class="sourcecode"><span class="category_1">private</span> <span class="category_1">void</span> propaRec (ImageProcessor imNormeG, ImageProcessor imContours, <span class="category_1">int</span> seuilBas, <span class="category_1">int</span> x, <span class="category_1">int</span> y)
+</pre>
+<div class="vspace"></div><div class="indent">Cette méthode doit marquer le point <span><math title="(x,y)"><mstyle><mo maxsize="1">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo maxsize="1">)</mo></mstyle></math></span>
+ comme contour puis propager récursivement le seuillage à ses 
+8&nbsp;voisins. Les conditions d'arrêt de la récursivité devront 
+évidemment être spécifiées. Comparer le résultat obtenu avec celui 
+fourni par la version itérative.
+</div><div class="vspace"></div><ol><li value="4"> Il n'existe pas de 
+méthode pour déterminer automatiquement des seuils fournissant des 
+résultats satisfaisants sur tous types d'images. Déterminer donc 
+empiriquement, pour notre image de travail, quels sont les seuils que 
+vous préconisez d'adopter. Bien que basés sur une analyse subjective, 
+ceux-ci devront être justifiés au regard des résultats obtenus.
+</li></ol>
+</div>
+
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+      <!--PageFooterFmt-->
+        <div id="footer">
+          <div id="copyright"><p>© 2010, <a class="urllink" href="http://ieea.univ-lille1.fr/" rel="nofollow">UFR d'IEEA</a> | spécialité commune aux mentions <a class="urllink" href="http://master-ase.univ-lille1.fr/" rel="nofollow">ASE</a> et <a class="urllink" href="http://fil.univ-lille1.fr/master-informatique/" rel="nofollow">Informatique</a> du <a class="urllink" href="http://www.univ-lille1.fr/etudes/offre-de-formation/Sciences-Technologies-Sante" rel="nofollow">master S&amp;T</a> |
+<a class="urllink" href="http://www.univ-lille1.fr/" rel="nofollow">Université Lille 1</a>
+</p>
+</div>
+        </div>
+      <!--/PageFooterFmt-->
+    </div>
+    <div class="clearfix"></div>
+  
+
+
+</body></html>

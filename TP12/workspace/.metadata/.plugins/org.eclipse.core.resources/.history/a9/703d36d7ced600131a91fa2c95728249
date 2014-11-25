@@ -1,0 +1,22 @@
+import ij.ImagePlus;
+import ij.plugin.filter.PlugInFilter;
+import ij.process.ImageProcessor;
+
+public class ValidateDCT implements PlugInFilter {
+
+	ImagePlus imp; // Fenêtre contenant l'image de référence
+
+	@Override
+	public int setup(String arg, ImagePlus imp) {
+		this.imp = imp;
+		
+		return PlugInFilter.DOES_32;
+	}
+
+	@Override
+	public void run(ImageProcessor ip) {
+		ip.
+		DCT2D.forwardDCT(fp);
+	}
+
+}

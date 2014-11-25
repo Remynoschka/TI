@@ -1,0 +1,3 @@
+INDEX VERSION 1.126+C:\Users\Remynoschka\Documents\Cours\M1S2\TI\TP12\workspace\.metadata\.plugins\org.eclipse.jdt.core
+760566276.index
+3832500063.index

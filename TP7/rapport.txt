@@ -1,0 +1,30 @@
+Q1) 1024_moire : Seconde raie (505,504) / omega = 0.01038
+	104_moire_sous-echantillon(128,128) : Seconde raie (57,56) / omega = 0.08305
+
+On voit des différences dans les hautes fréquences des l'image. Sur les zones non diagonales, comme la FTT suppose
+que l'image est périodique, on retrouve des morceaux de l'autre image ce qui crée des modifications sur l'image résultante.
+
+Q2) f1+f2 = originale
+ donc f1 = originale - f2
+
+Q3)
+omega1 = 0.1002
+
+Q4)
+omega2 = 0.01038
+
+Q5)
+Omega1se = 0.6144
+Omega2se = 0.08305
+effet de moire present uniquement sur f2.L'effet se produit donc uniquement à partir d'une certaine valeur.
+
+Q6)
+frequence max=0,625 dans l'image d'origine pour eviter l'effet de moire car frequence max=0,5 pour eviter effet de moire et 0,5/8=0,0625
+
+Q7)
+La frequence qui evite le phenomene de repliement de spectre est omega2 car sa frequence est inferieur à 0,0625
+
+Q8)
+La frequence omega2 etant trop elevé,cela va creer un phenomene de repliement de spectre. 
+Or l'image etant composé de deux ondes concentriques, le phenomene de repliement de spectre provoqué par les basses frequences va affecré les hautes frequences. Cette modification de la frequence des deux ondes concentriques provoque l'effet de moire.
+Q9)
